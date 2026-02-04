@@ -5,10 +5,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,11 +23,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.forecast.R
@@ -125,4 +132,54 @@ private fun TextsInPanel(temperature: String) {
             textAlign = TextAlign.Start
         )
     }
+}
+
+@Composable
+fun CityName(cityName: String) {
+    Row(
+        modifier = Modifier.padding(top = 70.dp, start = 30.dp, bottom = 50.dp).fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.location),
+            contentDescription = "иконка",
+            modifier = Modifier.size(24.dp),
+            tint = Color.White
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.Black.copy(alpha = 0.2f),
+                    offset = Offset(0f, 20f),
+                    blurRadius = 10f
+                )
+            ),
+            text = cityName,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 23.sp,
+            color = Color.White,
+        )
+    }
+}
+
+@Composable
+fun WeatherIcon() {
+    Icon(
+        painter = painterResource(R.drawable.cloudy),
+        contentDescription = "иконка",
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize(Alignment.Center)
+            .size(128.dp),
+        tint = Color.White
+    )
+}
+
+@Preview()
+@Composable
+fun ForecastAppPreview() {
+    ForecastApp(weather = "52.1")
 }
