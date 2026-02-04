@@ -35,7 +35,10 @@ fun ForecastApp(weather: String) {
         ) {
             CityName("Москва")
             WeatherIcon()
-            Box(modifier = Modifier.fillMaxWidth().padding(top = 60.dp).weight(1f))
+            Box(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 60.dp)
+                .weight(1f))
             {
                 WeatherPanel(weather)
             }
@@ -43,10 +46,3 @@ fun ForecastApp(weather: String) {
     }
 }
 
-
-
-@Preview()
-@Composable
-fun ForecastAppPreview2() {
-    ForecastApp(weather = "52.1")
-}
