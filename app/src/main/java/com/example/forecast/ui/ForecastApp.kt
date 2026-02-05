@@ -40,7 +40,7 @@ fun ForecastApp(weather: WeatherDay) {
             modifier = Modifier.fillMaxSize(),
         ) {
             CityName("Москва")
-            WeatherIcon()
+            WeatherIcon(weather.icon)
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 60.dp)

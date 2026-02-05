@@ -1,5 +1,6 @@
 package com.example.forecast.ui.main_screen
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -56,7 +59,7 @@ fun WeatherPanel(weather: WeatherDay, panelData: PanelData) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextsInPanel(weather.degrees.toString(), weather.weatherType,
-                     round(weather.windKph), panelData)
+                     weather.windKph, panelData)
     }
 }
 
@@ -171,9 +174,15 @@ fun CityName(cityName: String) {
 }
 
 @Composable
-fun WeatherIcon() {
+fun WeatherIcon(icon: Bitmap? = null) {
+    val imageIcon = if (icon == null) {
+        painterResource(R.drawable.cloudy)
+    } else {
+        BitmapPainter(icon.asImageBitmap())
+    }
+
     Icon(
-        painter = painterResource(R.drawable.cloudy),
+        painter = imageIcon,
         contentDescription = "иконка",
         modifier = Modifier
             .fillMaxWidth()
@@ -186,5 +195,5 @@ fun WeatherIcon() {
 @Preview()
 @Composable
 fun ForecastAppPreview() {
-    ForecastApp(weather = WeatherDay("Moscow", 52.0, "Переохлажденный туман", 11.11))
+    ForecastApp(weather = WeatherDay("Moscow", 52.0, "Переохлажденный туман", 11.11,))
 }
