@@ -1,6 +1,7 @@
 package com.example.forecast
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,10 +24,11 @@ class MainActivity : ComponentActivity() {
 
 
         lifecycleScope.launch {
-            val a = RemoteDataSourceImpl(service).getWeather()
+            val curWeather = RemoteDataSourceImpl(service).getWeather()
+            Toast.makeText(this@MainActivity, curWeather.toString(), Toast.LENGTH_SHORT).show()
+            setContent { ForecastApp(curWeather) }
         }
 
-        setContent { ForecastApp("-20.8") }
     }
 
     private companion object {

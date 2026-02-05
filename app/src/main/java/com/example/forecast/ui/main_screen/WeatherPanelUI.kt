@@ -1,4 +1,4 @@
-package com.example.forecast.ui
+package com.example.forecast.ui.main_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,9 +33,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.forecast.R
+import com.example.forecast.domain.WeatherDay
+import com.example.forecast.ui.ForecastApp
+import kotlin.math.round
 
 @Composable
-fun WeatherPanel(temperature: String) {
+fun WeatherPanel(weather: WeatherDay, panelData: PanelData) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,12 +55,14 @@ fun WeatherPanel(temperature: String) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TextsInPanel(temperature)
+        TextsInPanel(weather.degrees.toString(), weather.weatherType,
+                     round(weather.windKph), panelData)
     }
 }
 
 @Composable
-private fun TextsInPanel(temperature: String) {
+private fun TextsInPanel(temperature: String, weatherType: String,
+                         windSpeed: Double, panelData: PanelData) {
     val font = FontFamily(Font(R.font.overpass_regular))
     val textStyle = TextStyle(
         shadow = Shadow(
@@ -69,7 +74,7 @@ private fun TextsInPanel(temperature: String) {
     )
 
     Text(
-        text="Сегодня, 2 февраля",
+        text= panelData.curDateString,
         modifier = Modifier.padding(top = 20.dp, bottom = 10.dp),
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
@@ -95,7 +100,7 @@ private fun TextsInPanel(temperature: String) {
         )
     }
     Text(
-        text = "Облачно",
+        text = weatherType,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
         modifier = Modifier.padding(top = 20.dp),
@@ -124,7 +129,7 @@ private fun TextsInPanel(temperature: String) {
         )
 
         Text(
-            text = "10 м/c",
+            text = "$windSpeed км/ч",
             style = textStyle,
             fontWeight = FontWeight.SemiBold,
             fontSize = 16.sp,
@@ -181,5 +186,5 @@ fun WeatherIcon() {
 @Preview()
 @Composable
 fun ForecastAppPreview() {
-    ForecastApp(weather = "52.1")
+    ForecastApp(weather = WeatherDay("Moscow", 52.0, "Переохлажденный туман", 11.11))
 }

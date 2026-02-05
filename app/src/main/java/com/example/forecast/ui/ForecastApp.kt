@@ -10,12 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.forecast.domain.WeatherDay
+import com.example.forecast.ui.main_screen.CityName
+import com.example.forecast.ui.main_screen.PanelData
+import com.example.forecast.ui.main_screen.WeatherIcon
+import com.example.forecast.ui.main_screen.WeatherPanel
 
 
 @Composable
-fun ForecastApp(weather: String) {
+fun ForecastApp(weather: WeatherDay) {
+    val panelData = PanelData()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,7 +46,7 @@ fun ForecastApp(weather: String) {
                 .padding(top = 60.dp)
                 .weight(1f))
             {
-                WeatherPanel(weather)
+                WeatherPanel(weather, panelData)
             }
         }
     }
