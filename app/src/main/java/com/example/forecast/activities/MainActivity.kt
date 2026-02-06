@@ -1,7 +1,6 @@
-package com.example.forecast
+package com.example.forecast.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,6 +11,7 @@ import com.example.forecast.ui.ForecastApp
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val curWeather = RemoteDataSourceImpl(service).getWeather()
-            Toast.makeText(this@MainActivity, curWeather.toString(), Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this@MainActivity, curWeather.toString(), Toast.LENGTH_SHORT).show()
             setContent { ForecastApp(curWeather) }
         }
 
@@ -36,4 +36,3 @@ class MainActivity : ComponentActivity() {
         const val TAG = "TAG"
     }
 }
-

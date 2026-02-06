@@ -1,10 +1,13 @@
 package com.example.forecast.ui
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -13,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.forecast.domain.WeatherDay
 import com.example.forecast.ui.main_screen.CityName
+import com.example.forecast.ui.main_screen.ForecastButton
 import com.example.forecast.ui.main_screen.PanelData
 import com.example.forecast.ui.main_screen.WeatherIcon
 import com.example.forecast.ui.main_screen.WeatherPanel
@@ -38,6 +42,7 @@ fun ForecastApp(weather: WeatherDay) {
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center
         ) {
             CityName("Москва")
             WeatherIcon(weather.icon)
@@ -48,6 +53,7 @@ fun ForecastApp(weather: WeatherDay) {
             {
                 WeatherPanel(weather, panelData)
             }
+            ForecastButton()
         }
     }
 }

@@ -1,10 +1,13 @@
 package com.example.forecast.ui.main_screen
 
+import android.content.Intent
 import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +17,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -36,9 +42,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.forecast.R
+import com.example.forecast.activities.DetailedForecast
 import com.example.forecast.domain.WeatherDay
 import com.example.forecast.ui.ForecastApp
-import kotlin.math.round
 
 @Composable
 fun WeatherPanel(weather: WeatherDay, panelData: PanelData) {
@@ -111,7 +117,9 @@ private fun TextsInPanel(temperature: String, weatherType: String,
     )
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -145,7 +153,9 @@ private fun TextsInPanel(temperature: String, weatherType: String,
 @Composable
 fun CityName(cityName: String) {
     Row(
-        modifier = Modifier.padding(top = 70.dp, start = 30.dp, bottom = 50.dp).fillMaxWidth(),
+        modifier = Modifier
+            .padding(top = 70.dp, start = 30.dp, bottom = 50.dp)
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -192,8 +202,33 @@ fun WeatherIcon(icon: Bitmap? = null) {
     )
 }
 
+@Composable
+fun ForecastButton() {
+    val context = LocalContext.current
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 40.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(onClick = {
+            val intent: Intent = Intent(context, DetailedForecast::class.java)
+            context.startActivity(intent)
+        },
+            contentPadding = PaddingValues(
+                start = 24.dp, top = 12.dp, end = 24.dp, bottom = 12.dp
+            ),
+            colors = ButtonDefaults.buttonColors().copy(containerColor = Color.White,
+                                                        contentColor = Color.Black)) {
+
+            Text("Подробнее", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+        }
+    }
+}
+
 @Preview()
 @Composable
 fun ForecastAppPreview() {
-    ForecastApp(weather = WeatherDay("Moscow", 52.0, "Переохлажденный туман", 11.11,))
+    ForecastApp(weather = WeatherDay("Moscow", 52.0, "Переохлажденный туман", 11.11))
 }
