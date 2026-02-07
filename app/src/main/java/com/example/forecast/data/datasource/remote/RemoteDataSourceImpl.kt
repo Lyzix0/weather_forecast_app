@@ -2,35 +2,33 @@ package com.example.forecast.data.datasource.remote
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
-import com.example.forecast.domain.WeatherDay
+import com.example.forecast.domain.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.time.LocalDateTime
 
 class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
-    override suspend fun getWeather(): WeatherDay {
-        val json = JSONObject(api.getWeather().string())
-
-        val name = json.getJSONObject("location").getString("name")
+    override suspend fun getWeather(): Weather {
+        val json = JSONObject(api.getCurrentWeather().string())
 
         val current = json.getJSONObject("current")
-        val condition = current.getJSONObject("condition")
+        val weather = parseWeather(current)
 
-        val temperature = current.getDouble("temp_c")
-        val windSpeed = current.getDouble("wind_kph")
+        return weather
+    }
 
-        val weatherType = condition.getString("text")
-        val iconUrl = condition.getString("icon")
-        val imageBitmap = getIcon(iconUrl)
+    override suspend fun getDayWeather(): List<Weather> {
+        val currentTime = LocalDateTime.now().hour
 
-        return WeatherDay(
-            cityName = name,
-            degrees = temperature,
-            weatherType = weatherType,
-            windKph = windSpeed,
-            icon = imageBitmap
-        )
+        val json = JSONObject(api.getDayWeather().string())
+        val forecast: JSONObject = json.getJSONObject("forecast").getJSONArray("forecastday")[0] as JSONObject
+        val hours = forecast.getJSONArray("hour")
+
+        return (currentTime - 2..currentTime + 2).map { i ->
+            val hour = hours[i] as JSONObject
+            parseWeather(hour)
+        }
     }
 
     override suspend fun getIcon(url: String): Bitmap? {
@@ -43,5 +41,22 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
             }
             bitmap
         }
+    }
+
+    private suspend fun parseWeather(current: JSONObject): Weather {
+        val temp = current.getDouble("temp_c")
+        val windSpeed = current.getDouble("wind_kph")
+
+        val condition = current.getJSONObject("condition")
+        val weatherType = condition.getString("text")
+        val iconUrl = condition.getString("icon")
+
+        val weather = Weather(
+            degrees = temp,
+            weatherType = weatherType,
+            windKph = windSpeed,
+            icon = getIcon(iconUrl)
+        )
+        return weather
     }
 }

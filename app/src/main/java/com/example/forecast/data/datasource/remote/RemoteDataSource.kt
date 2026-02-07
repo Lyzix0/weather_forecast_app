@@ -1,10 +1,10 @@
 package com.example.forecast.data.datasource.remote
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import com.example.forecast.domain.WeatherDay
+import com.example.forecast.domain.Weather
 
 interface RemoteDataSource {
-    suspend fun getWeather(): WeatherDay?
+    suspend fun getWeather(): Weather?
     suspend fun getIcon(url: String): Bitmap?
+    suspend fun getDayWeather(): List<Weather>
 }

@@ -1,13 +1,20 @@
 package com.example.forecast.activities
 
+import Navigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import com.example.forecast.data.datasource.remote.ApiService
 import com.example.forecast.data.datasource.remote.RemoteDataSourceImpl
-import com.example.forecast.ui.ForecastApp
+import com.example.forecast.ui.Loading
+import com.example.forecast.ui.theme.MainGradient
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,22 +24,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val client = OkHttpClient.Builder().build()
-
-        val retrofit = Retrofit.Builder().client(client).baseUrl(BASE_URL).build()
-        val service = retrofit.create(ApiService::class.java)
-
+        setContent { Loading() }
 
         lifecycleScope.launch {
-            val curWeather = RemoteDataSourceImpl(service).getWeather()
 //            Toast.makeText(this@MainActivity, curWeather.toString(), Toast.LENGTH_SHORT).show()
-            setContent { ForecastApp(curWeather) }
+            val instance = DataRepository.getInstance()
+            val weather = instance.getCurWeather()
+            setContent {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MainGradient)
+                ) {
+                    Navigation(weather)
+                }
+            }
         }
-
-    }
-
-    private companion object {
-        const val BASE_URL = "http://api.weatherapi.com/v1/"
-        const val TAG = "TAG"
     }
 }

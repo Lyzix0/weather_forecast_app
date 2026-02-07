@@ -1,6 +1,5 @@
 package com.example.forecast.ui.main_screen
 
-import android.content.Intent
 import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -42,12 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.forecast.R
-import com.example.forecast.activities.DetailedForecast
-import com.example.forecast.domain.WeatherDay
-import com.example.forecast.ui.ForecastApp
+import com.example.forecast.domain.Weather
 
 @Composable
-fun WeatherPanel(weather: WeatherDay, panelData: PanelData) {
+fun WeatherPanel(weather: Weather, panelData: PanelData) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,16 +106,17 @@ private fun TextsInPanel(temperature: String, weatherType: String,
     }
     Text(
         text = weatherType,
+        textAlign = TextAlign.Center,
         fontWeight = FontWeight.SemiBold,
         fontSize = 24.sp,
-        modifier = Modifier.padding(top = 20.dp),
+        modifier = Modifier.padding(top = 20.dp, start = 5.dp, end = 5.dp),
         style = textStyle,
     )
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp),
+            .padding(top = 20.dp, bottom = 10.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -203,26 +200,22 @@ fun WeatherIcon(icon: Bitmap? = null) {
 }
 
 @Composable
-fun ForecastButton() {
-    val context = LocalContext.current
-
+fun ForecastButton(onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 40.dp),
         contentAlignment = Alignment.Center
     ) {
-        Button(onClick = {
-            val intent: Intent = Intent(context, DetailedForecast::class.java)
-            context.startActivity(intent)
-        },
+        Button(onClick = onClick,
             contentPadding = PaddingValues(
                 start = 24.dp, top = 12.dp, end = 24.dp, bottom = 12.dp
             ),
             colors = ButtonDefaults.buttonColors().copy(containerColor = Color.White,
                                                         contentColor = Color.Black)) {
 
-            Text("Подробнее", fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text("Подробнее", fontSize = 17.sp, fontWeight = FontWeight.SemiBold,
+                color = Color(68, 78, 114))
         }
     }
 }
@@ -230,5 +223,8 @@ fun ForecastButton() {
 @Preview()
 @Composable
 fun ForecastAppPreview() {
-    ForecastApp(weather = WeatherDay("Moscow", 52.0, "Переохлажденный туман", 11.11))
+    ForecastApp(
+        weather = Weather(52.67, "Переохлажденный туман", 11.11),
+        onOpenDetails = { println(52) }
+    )
 }

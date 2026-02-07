@@ -3,8 +3,7 @@ package com.example.forecast.domain
 import android.graphics.Bitmap
 
 
-data class WeatherDay (
-    val cityName: String,
+data class Weather (
     val degrees: Double,
     val weatherType: String,
     val windKph: Double,
