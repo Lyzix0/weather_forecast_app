@@ -224,7 +224,7 @@ fun ForecastButton(onClick: () -> Unit) {
 @Composable
 fun ForecastAppPreview() {
     ForecastApp(
-        weather = Weather(52.67, "Переохлажденный туман", 11.11),
+        weather = Weather(52.5, "Переохлажденный туман", 11.11),
         onOpenDetails = { println(52) }
     )
 }
