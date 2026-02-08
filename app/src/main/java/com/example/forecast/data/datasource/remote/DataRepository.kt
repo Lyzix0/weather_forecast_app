@@ -1,9 +1,8 @@
-import com.example.forecast.data.datasource.remote.ApiService
-import com.example.forecast.data.datasource.remote.RemoteDataSourceImpl
+package com.example.forecast.data.datasource.remote
+
 import com.example.forecast.domain.Weather
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-
 
 class DataRepository private constructor() {
     companion object {

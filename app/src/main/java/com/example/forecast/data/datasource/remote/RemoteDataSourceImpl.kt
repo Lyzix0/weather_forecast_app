@@ -61,6 +61,10 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
         val temp = current.getDouble("${if (avg) "avg" else ""}temp_c")
         val windSpeed = current.getDouble(if (avg) "avgvis_km" else "wind_kph")
 
+        val humidity = if (!avg) {
+            current.getDouble("humidity")
+        } else null
+
         val condition = current.getJSONObject("condition")
         val weatherType = condition.getString("text")
         val iconUrl = condition.getString("icon")
@@ -69,7 +73,8 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
             degrees = temp,
             weatherType = weatherType,
             windKph = windSpeed,
-            icon = getIcon(iconUrl)
+            icon = getIcon(iconUrl),
+            humidity = humidity
         )
         return weather
     }
