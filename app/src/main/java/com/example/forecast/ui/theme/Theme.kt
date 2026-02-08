@@ -1,10 +1,6 @@
 package com.example.forecast.ui.theme
 
-import android.R.attr.background
-import android.R.id.background
-import android.app.Activity
 import android.os.Build
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -15,7 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -39,6 +38,15 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+val textStyle = TextStyle(
+    shadow = Shadow(
+        color = Color.Black.copy(alpha = 0.2f),
+        offset = Offset(0f, 20f),
+        blurRadius = 20f
+    ),
+    color = Color.White
+)
+
 val MainGradient = Brush.linearGradient(
     colors = listOf(
         Color(0xFF47BFDF),
@@ -46,6 +54,7 @@ val MainGradient = Brush.linearGradient(
     ),
     start = Offset(Float.POSITIVE_INFINITY, 0f),
     end = Offset(0f, Float.POSITIVE_INFINITY)
+
 )
 
 @Composable

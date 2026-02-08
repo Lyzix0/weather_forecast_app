@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.forecast.R
 import com.example.forecast.domain.Weather
+import com.example.forecast.ui.PanelData
 
 @Composable
 fun WeatherPanel(weather: Weather, panelData: PanelData) {
@@ -67,7 +68,8 @@ fun WeatherPanel(weather: Weather, panelData: PanelData) {
 
 @Composable
 private fun TextsInPanel(temperature: String, weatherType: String,
-                         windSpeed: Double, panelData: PanelData) {
+                         windSpeed: Double, panelData: PanelData
+) {
     val font = FontFamily(Font(R.font.overpass_regular))
     val textStyle = TextStyle(
         shadow = Shadow(

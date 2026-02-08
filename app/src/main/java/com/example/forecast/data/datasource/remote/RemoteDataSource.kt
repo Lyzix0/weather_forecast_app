@@ -7,4 +7,5 @@ interface RemoteDataSource {
     suspend fun getWeather(): Weather?
     suspend fun getIcon(url: String): Bitmap?
     suspend fun getDayWeather(): List<Weather>
+    suspend fun getDaysForecast(): List<Weather>
 }

@@ -38,4 +38,9 @@ class DataRepository private constructor() {
         val weathers = RemoteDataSourceImpl(service).getDayWeather()
         return weathers
     }
+
+    suspend fun getFutureForecast(): List<Weather> {
+        val weathers = RemoteDataSourceImpl(service).getDaysForecast()
+        return weathers
+    }
 }

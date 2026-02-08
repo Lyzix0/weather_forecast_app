@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import com.example.forecast.domain.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalDateTime
 
@@ -13,7 +14,7 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
         val json = JSONObject(api.getCurrentWeather().string())
 
         val current = json.getJSONObject("current")
-        val weather = parseWeather(current)
+        val weather = parseWeather(current,)
 
         return weather
     }
@@ -27,7 +28,20 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
 
         return (currentTime - 2..currentTime + 2).map { i ->
             val hour = hours[i] as JSONObject
-            parseWeather(hour)
+            parseWeather(hour,)
+        }
+    }
+
+    override suspend fun getDaysForecast(): List<Weather> {
+        val daysCount = 7
+        val json = JSONObject(api.getDayWeather(days=daysCount).string())
+        val forecastDays: JSONArray = json
+            .getJSONObject("forecast")
+            .getJSONArray("forecastday")
+
+        return (0 until forecastDays.length()).map { i ->
+            val data = forecastDays.getJSONObject(i).getJSONObject("day")
+            parseWeather(data, avg = true)
         }
     }
 
@@ -43,9 +57,9 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
         }
     }
 
-    private suspend fun parseWeather(current: JSONObject): Weather {
-        val temp = current.getDouble("temp_c")
-        val windSpeed = current.getDouble("wind_kph")
+    private suspend fun parseWeather(current: JSONObject, avg: Boolean = false): Weather {
+        val temp = current.getDouble("${if (avg) "avg" else ""}temp_c")
+        val windSpeed = current.getDouble(if (avg) "avgvis_km" else "wind_kph")
 
         val condition = current.getJSONObject("condition")
         val weatherType = condition.getString("text")

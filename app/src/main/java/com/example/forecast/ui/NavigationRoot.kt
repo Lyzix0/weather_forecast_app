@@ -45,18 +45,24 @@ fun Navigation(curWeather: Weather) {
             }
 
             entry<DetailedScreen> {
-                var weathers by remember { mutableStateOf<List<Weather>?>(null) }
-                
+                var todayForecast by remember { mutableStateOf<List<Weather>?>(null) }
+                var futureForecast by remember { mutableStateOf<List<Weather>?>(null) }
+
                 LaunchedEffect(Unit) {
                     val instance = DataRepository.getInstance()
-                    weathers = instance.getDayWeather()
+                    todayForecast = instance.getDayWeather()
+                    futureForecast = instance.getFutureForecast()
                 }
 
-                val currentWeathers = weathers
-                if (currentWeathers == null) {
+                val currentWeathers = todayForecast
+                val futureWeathers = futureForecast
+
+                if (currentWeathers == null || futureWeathers == null) {
                     Loading()
                 } else {
-                    DescriptionScreen(currentWeathers)
+                    DescriptionScreen(currentWeathers,
+                        futureWeathers,
+                        { backStack.removeLastOrNull() })
                 }
             }
         }
