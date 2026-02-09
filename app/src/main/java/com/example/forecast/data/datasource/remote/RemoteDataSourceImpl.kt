@@ -27,13 +27,13 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
         val hours = forecast.getJSONArray("hour")
 
         return (currentTime - 2..currentTime + 2).map { i ->
-            val hour = hours[i] as JSONObject
+            val hour = hours[i % 24] as JSONObject
             parseWeather(hour,)
         }
     }
 
     override suspend fun getDaysForecast(): List<Weather> {
-        val daysCount = 7
+        val daysCount = 14
         val json = JSONObject(api.getDayWeather(days=daysCount).string())
         val forecastDays: JSONArray = json
             .getJSONObject("forecast")

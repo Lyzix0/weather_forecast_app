@@ -1,5 +1,6 @@
 package com.example.forecast.ui.descriptions
 
+import android.graphics.drawable.shapes.Shape
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
@@ -7,6 +8,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +19,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -55,7 +59,6 @@ fun ShowScreen(
             .fillMaxSize()
             .background(MainGradient)
             .padding(top = 60.dp, end = 25.dp, bottom = 20.dp, start = 25.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
@@ -77,7 +80,7 @@ fun ShowScreen(
             var date = result.format(formatterFuture)
             date = date.replace(".", "").replaceFirstChar { it.uppercase() }
 
-            Text("Сегодня", style = textStyle, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text("Сегодня", style = textStyle, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
             Text(date, style = textStyle, fontSize = 18.sp)
         }
 
@@ -127,7 +130,7 @@ fun WeatherRow(weathers: List<Weather>) {
 @Composable
 fun WeatherForecast(weathers: List<Weather>) {
     Column(
-        modifier = Modifier.fillMaxHeight(),
+        modifier = Modifier.height(350.dp).verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -147,14 +150,15 @@ fun WeatherForecast(weathers: List<Weather>) {
 fun ForecastRow(weather: Weather, curDate: String) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 6.dp, vertical = 5.dp),
+            .fillMaxWidth().padding(vertical = 6.dp)
+            .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(15)),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = curDate, style = textStyle, fontSize = 18.sp,
-            fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f)
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.weight(1f).padding(start = 7.dp)
         )
 
         Icon(
@@ -168,7 +172,7 @@ fun ForecastRow(weather: Weather, curDate: String) {
             style = textStyle,
             fontSize = 18.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).padding(end = 7.dp),
             textAlign = TextAlign.End
         )
     }
@@ -182,7 +186,6 @@ fun WeatherColumn(weather: Weather, currHour: Int) {
         Alignment.CenterHorizontally
     )
     {
-
         Text(
             text = "${round(weather.degrees)}°C",
             style = textStyle,
@@ -231,6 +234,13 @@ fun DescriptionScreen(
 @Composable
 fun ScreenPreview() {
     val weathers = listOf(
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
+        Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
         Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
         Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
         Weather(degrees = 52.5, weatherType = "хз", windKph = 11.1),
