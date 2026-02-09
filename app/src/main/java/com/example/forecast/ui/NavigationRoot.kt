@@ -15,6 +15,8 @@ import com.example.forecast.domain.Weather
 import com.example.forecast.ui.Loading
 import com.example.forecast.ui.descriptions.DescriptionScreen
 import com.example.forecast.ui.main_screen.ForecastApp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 data object MainScreen
 data object DetailedScreen
@@ -46,26 +48,39 @@ fun Navigation(curWeather: Weather) {
             }
 
             entry<DetailedScreen> {
-                var todayForecast by remember { mutableStateOf<List<Weather>?>(null) }
                 var futureForecast by remember { mutableStateOf<List<Weather>?>(null) }
+                var longLoading by remember { mutableStateOf(false) }
 
                 LaunchedEffect(Unit) {
-                    val instance = DataRepository.getInstance()
-                    todayForecast = instance.getDayWeather()
-                    futureForecast = instance.getFutureForecast()
+                    launch {
+                        delay(3000)
+                        if (futureForecast == null) {
+                            longLoading = true
+                        }
+                        futureForecast = getForecast()
+                    }
                 }
 
-                val currentWeathers = todayForecast
                 val futureWeathers = futureForecast
 
-                if (currentWeathers == null || futureWeathers == null) {
+                if (futureWeathers == null) {
                     Loading()
+                    if (longLoading) {
+                        LaunchedEffect(Unit) {
+                            futureForecast = getForecast()
+                        }
+                    }
                 } else {
-                    DescriptionScreen(currentWeathers,
-                        futureWeathers,
-                        { backStack.removeLastOrNull() })
+                    DescriptionScreen(futureWeathers,
+                        futureWeathers
+                    ) { backStack.removeLastOrNull() }
                 }
             }
         }
     )
+}
+
+suspend fun getForecast(): List<Weather> {
+    val instance = DataRepository.getInstance()
+    return instance.getFutureForecast()
 }

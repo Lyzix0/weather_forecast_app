@@ -1,6 +1,5 @@
 package com.example.forecast.ui.descriptions
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
@@ -8,18 +7,15 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -122,7 +118,7 @@ fun WeatherRow(weathers: List<Weather>) {
         val currentTime = LocalDateTime.now().hour
 
         for (i in 0..4) {
-            WeatherColumn(weathers[i], currentTime - 2 + i)
+            WeatherColumn(weathers[i], (currentTime - 2 + 24 + i) % 24)
         }
     }
 }
@@ -199,7 +195,7 @@ fun WeatherColumn(weather: Weather, currHour: Int) {
             tint = Color.White,
         )
         Text(
-            text = "$currHour:00",
+            text = if (currHour < 10) { "0$currHour:00" } else "$currHour:00",
             style = textStyle,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold
