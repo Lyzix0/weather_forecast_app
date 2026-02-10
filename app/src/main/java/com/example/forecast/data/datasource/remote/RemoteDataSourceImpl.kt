@@ -33,8 +33,15 @@ class RemoteDataSourceImpl(private val api: ApiService) : RemoteDataSource {
     }
 
     override suspend fun getDaysForecast(): List<Weather> {
-        val daysCount = 14
-        val json = JSONObject(api.getDayWeather(days=daysCount).string())
+        val daysCount = 8
+        var json: JSONObject? = null
+
+        try {
+            json = JSONObject(api.getDayWeather(days=daysCount).string())
+        }
+        catch (e: Exception) {
+            return getDaysForecast()
+        }
         val forecastDays: JSONArray = json
             .getJSONObject("forecast")
             .getJSONArray("forecastday")

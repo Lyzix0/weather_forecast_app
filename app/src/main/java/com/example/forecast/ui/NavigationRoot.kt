@@ -53,10 +53,6 @@ fun Navigation(curWeather: Weather) {
 
                 LaunchedEffect(Unit) {
                     launch {
-                        delay(3000)
-                        if (futureForecast == null) {
-                            longLoading = true
-                        }
                         futureForecast = getForecast()
                     }
                 }
@@ -65,17 +61,12 @@ fun Navigation(curWeather: Weather) {
 
                 if (futureWeathers == null) {
                     Loading()
-                    if (longLoading) {
-                        LaunchedEffect(Unit) {
-                            futureForecast = getForecast()
-                        }
-                    }
                 } else {
                     DescriptionScreen(futureWeathers,
                         futureWeathers
                     ) { backStack.removeLastOrNull() }
                 }
-            }
+        }
         }
     )
 }

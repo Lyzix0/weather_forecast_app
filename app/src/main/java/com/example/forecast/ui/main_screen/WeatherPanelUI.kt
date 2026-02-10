@@ -46,6 +46,7 @@
     import com.example.forecast.ui.PanelData
     import com.example.forecast.ui.getPainterResource
     import com.example.forecast.ui.theme.textStyle
+    import kotlin.math.round
 
     @Composable
     fun WeatherPanel(weather: Weather, panelData: PanelData) {
@@ -65,7 +66,7 @@
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            TextsInPanel(weather.degrees.toString(), weather.weatherType,
+            TextsInPanel(round(weather.degrees).toInt().toString(), weather.weatherType,
                          weather.windKph, weather.humidity!!, panelData)
         }
     }
