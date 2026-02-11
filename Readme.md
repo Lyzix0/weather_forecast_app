@@ -1,1 +1,1 @@
-[![Watch the video](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.pfps.gg%2Fpfps%2F8458-funny-cat-16.png&f=1&nofb=1&ipt=dc4b9765da6a56575cb57d4b26bea238fc80cb3cd26472e6f69693b3f7963dc4)](https://github.com/Lyzix0/weather_forecast_app/blob/master/recording.mp4)
+[![video](https://img.youtube.com/vi/zP_4AeTeNS8/0.jpg)](https://youtube.com/shorts/zP_4AeTeNS8?feature=share)
